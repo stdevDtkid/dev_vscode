@@ -197,6 +197,12 @@ ENV LD_LIBRARY_PATH=/usr/local/lib
 #    --name vscode \
 #    jess/vscode
 
+RUN apt-get update && apt-get install -y \
+  apt-transport-https \
+  ca-certificates \
+  gnupg \
+  --no-install-recommends
+
 # Add the vscode debian repo
 RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | apt-key add -
 RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list
@@ -230,7 +236,7 @@ RUN apt-get update && apt-get -y install \
 
 ENV HOME /home/skycode
 RUN useradd --create-home --home-dir $HOME skycode \
-  && chown -R user:user $HOME
+  && chown -R skycodek:skycode $HOME
 
 # TODO: Create start.sh in this Dockerfile
 COPY start.sh /usr/local/bin/start.sh
